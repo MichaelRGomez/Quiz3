@@ -2,8 +2,13 @@
 package main
 
 import (
+	"context"
+	"database/sql"
+	"fmt"
 	"log"
+	"net/http"
 	"os"
+	"time"
 )
 
 // configuration struct to hold configuration settings
@@ -19,10 +24,10 @@ type config struct {
 }
 
 // application struct is made to facilitate dependency injection
-type application struct{
+type application struct {
 	config config
 	logger *log.Logger
-	model data.Models
+	model  data.Models
 }
 
 // main
@@ -38,15 +43,13 @@ func main() {
 	cfg.db.maxIdleConns = 25
 	cfg.db.MaxIdleTime = "15m"
 
-
 	//creating logger to log issues or state changes
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
 	//creating connection
-	db, err := openDB(cfg){
-		if err != nil{
-			logger.Fatal(err)
-		}
+	db, err := openDB(cfg)
+	if err != nil {
+		logger.Fatal(err)
 	}
 
 	//ensuring that the connection to the database is closed
@@ -63,16 +66,16 @@ func main() {
 
 	//initializing http server dependencies
 	srv := &http.Server{
-		Addr: fmt.Sprintf(":%d", cfg.port),
-		Handler: app.routes(),
-		IdleTimeout: time.Minute,
-		ReadTimeout: 10 * time.Second,
+		Addr:         fmt.Sprintf(":%d", cfg.port),
+		Handler:      app.routes(),
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  10 * time.Second,
 		writeTimeout: 30 * time.Second,
 	}
 }
 
-//OpenDB() function returns a *sql.DB connection pool
-func openDB(cfg config ) (*sql.DB, error){
+// OpenDB() function returns a *sql.DB connection pool
+func openDB(cfg config) (*sql.DB, error) {
 	db, err := sql.Open("postgres", cfg.db.dsn)
 	if err != nil {
 		return nil, err
@@ -90,7 +93,7 @@ func openDB(cfg config ) (*sql.DB, error){
 	defer cancel()
 
 	err = db.PingContext(ctx)
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 	return db, nil
