@@ -70,8 +70,13 @@ func main() {
 		Handler:      app.routes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
-		writeTimeout: 30 * time.Second,
+		WriteTimeout: 30 * time.Second,
 	}
+
+	//staring the web server
+	logger.Printf("starting %s server on %s", cfg.env, srv.Addr)
+	err = srv.ListenAndServe()
+	logger.Fatal(err)
 }
 
 // OpenDB() function returns a *sql.DB connection pool
@@ -81,12 +86,12 @@ func openDB(cfg config) (*sql.DB, error) {
 		return nil, err
 	}
 	db.SetMaxOpenConns(cfg.db.maxOpenConns)
-	db.SetMaxIdelConns(cfg.db.maxIdleConns)
+	db.SetMaxIdleConns(cfg.db.maxIdleConns)
 	duration, err := time.ParseDuration(cfg.db.MaxIdleTime)
 	if err != nil {
 		return nil, err
 	}
-	db.SetConnMaxIdelTime(duration)
+	db.SetConnMaxIdleTime(duration)
 
 	//Creating a context with a 5-second timeout deadline
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
