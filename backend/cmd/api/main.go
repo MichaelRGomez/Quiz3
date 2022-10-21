@@ -38,7 +38,7 @@ func main() {
 	//hardcoding cofigurations since they are required for the quiz
 	cfg.port = 4000
 	cfg.env = "development"
-	cfg.db.dsn = "" //REMEMBER TO ADD DSN ONCE YOU CREATE THE DATABASE
+	cfg.db.dsn = os.Getenv("TODO_DB_DSN")
 	cfg.db.maxOpenConns = 25
 	cfg.db.maxIdleConns = 25
 	cfg.db.MaxIdleTime = "15m"

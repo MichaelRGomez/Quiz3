@@ -12,9 +12,12 @@ func (app *application) createTaskHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	//Initialize a new json.Decoder instance
-	err != app.readJSON(w, r, &input)
+	err := app.readJSON(w, r, &input)
 	if err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
+
+	//coping the valeus from the input struct to the new task struct
+
 }
