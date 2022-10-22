@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"todo.michaelgomez.net/internal/data"
 )
 
 // configuration struct to hold configuration settings
@@ -27,7 +29,7 @@ type config struct {
 type application struct {
 	config config
 	logger *log.Logger
-	model  data.Models
+	models data.Models
 }
 
 // main

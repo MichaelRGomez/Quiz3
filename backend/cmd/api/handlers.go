@@ -100,7 +100,7 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	//Fetch the original record from the database
-	task, err := app.models.Task.Get(id)
+	task, err := app.models.Tasks.Get(id)
 
 	//Handling the errors
 	if err != nil {
@@ -118,7 +118,7 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 	var input struct {
 		Title       *string `json:"title"`
 		Description *string `json:"description"`
-		Completed   *string `json: "completed"`
+		Completed   *bool   `json:"completed"`
 	}
 
 	//Initilizing a new json.Decoder instance
@@ -133,7 +133,7 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 		task.Title = *input.Title
 	}
 	if input.Description != nil {
-		task.Description = *input.Description
+		task.Descritpion = *input.Description
 	}
 	if input.Completed != nil {
 		task.Completed = *input.Completed
