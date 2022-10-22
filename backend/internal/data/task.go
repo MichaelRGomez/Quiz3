@@ -131,7 +131,7 @@ func (m TaskModel) Update(task *Task) error {
 
 }
 
-// Delete() removes a specific school
+// Delete() removes a specific task
 func (m TaskModel) Delete(id int64) error {
 	//Ensure that there is a valid id
 	if id < 1 {
@@ -167,7 +167,7 @@ func (m TaskModel) Delete(id int64) error {
 	return nil
 }
 
-// the GetAll() method returns a list of all schools sorted by id
+// the GetAll() method returns a list of all tasks sorted by id
 func (m TaskModel) GetAll(title string, description string, completed bool, filters Filters) ([]*Task, Metadata, error) {
 	//constructing the query
 	query := fmt.Sprintf(`
@@ -215,7 +215,7 @@ func (m TaskModel) GetAll(title string, description string, completed bool, filt
 		if err != nil {
 			return nil, Metadata{}, err
 		}
-		//Add the school to our slice
+		//Add the task to our slice
 		tasks = append(tasks, &task)
 	}
 	//checking for errors after looping through the result set
