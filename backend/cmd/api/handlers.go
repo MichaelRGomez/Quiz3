@@ -57,7 +57,6 @@ func (app *application) createTaskHandler(w http.ResponseWriter, r *http.Request
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
-
 }
 
 // The showentry handler will display an individual task
