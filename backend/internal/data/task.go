@@ -175,8 +175,8 @@ func (m TaskModel) GetAll(title string, description string, completed bool, filt
 		id, created_at, title, description, completed, version
 		FROM task_list
 		WHERE (to_tsvector('simple', title) @@ plainto_tsquery('simple', $1) OR $1 = '')
-		AND (to_tsvector('simple', description) @@ plainto_tsquery('simple', $1) OR $1 = '')
-		AND (completed = FALSE OR completed = TRUE)
+		AND (to_tsvector('simple', description) @@ plainto_tsquery('simple', $2) OR $2 = '')
+		AND (completed = $3 OR completed = TRUE)
 		ORDER BY %s %s, id ASC
 		LIMIT $4 OFFSET $5
 	`, filters.sortColumn(), filters.sortOrder())
@@ -185,12 +185,17 @@ func (m TaskModel) GetAll(title string, description string, completed bool, filt
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
+	//fmt.Println("Debug ! 2.5")
+
 	//Execute the query
 	args := []interface{}{title, description, completed, filters.limit(), filters.offSet()}
+	//fmt.Println("Debug ! 2.42")
 	rows, err := m.DB.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, Metadata{}, err
 	}
+
+	//fmt.Println("Debug ! 2.41")
 
 	//Closing the result set
 	defer rows.Close()
@@ -198,6 +203,8 @@ func (m TaskModel) GetAll(title string, description string, completed bool, filt
 
 	//Initialize an empty slice to hold the task data
 	tasks := []*Task{}
+
+	//fmt.Println("Debug ! 2.4")
 
 	//Iterate over the rows in the result set
 	for rows.Next() {
@@ -208,6 +215,7 @@ func (m TaskModel) GetAll(title string, description string, completed bool, filt
 			&totalRecords,
 			&task.ID,
 			&task.CreatedAt,
+			&task.Title,
 			&task.Descritpion,
 			&task.Completed,
 			&task.Version,
@@ -218,11 +226,20 @@ func (m TaskModel) GetAll(title string, description string, completed bool, filt
 		//Add the task to our slice
 		tasks = append(tasks, &task)
 	}
+
+	//fmt.Println("Debug ! 2.3")
+
 	//checking for errors after looping through the result set
 	if err = rows.Err(); err != nil {
 		return nil, Metadata{}, err
 	}
+
+	//fmt.Println("Debug ! 2.2")
+
 	metadata := calculateMetaData(totalRecords, filters.Page, filters.PageSize)
 	//returning the slice of tasks
+
+	//fmt.Println("Debug ! 2.1")
+
 	return tasks, metadata, nil
 }

@@ -254,6 +254,8 @@ func (app *application) listTasksHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	//fmt.Println("Debug ! 3")
+
 	//Geting a listing of all tasks
 	tasks, metadata, err := app.models.Tasks.GetAll(input.Title, input.Description, input.Completed, input.Filters)
 	if err != nil {
@@ -261,10 +263,14 @@ func (app *application) listTasksHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	//fmt.Println("Debug ! 2")
+
 	//sending JSON response containing all the schools
 	err = app.writeJSON(w, http.StatusOK, envelope{"tasks": tasks, "metadata": metadata}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
+
+	//fmt.Println("Debug ! 1")
 }
