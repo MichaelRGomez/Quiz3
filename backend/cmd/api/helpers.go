@@ -74,7 +74,7 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst int
 		//checkking for any wrong types passed by the client
 		case errors.As(err, &unmarshalTypeError):
 			if unmarshalTypeError.Field != "" {
-				return fmt.Errorf("body contains incorrect JSON type for field %q", unmarshalTypeError.Field)
+				return fmt.Errorf("body contains incorrect JSON type or field %q", unmarshalTypeError.Field)
 			}
 			return fmt.Errorf("body contains incorrect JSON tpye (at character %d)", unmarshalTypeError.Offset)
 		//Emtpy body

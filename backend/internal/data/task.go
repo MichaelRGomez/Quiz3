@@ -29,7 +29,7 @@ func ValidateTask(v *validator.Validator, task *Task) {
 	v.Check(task.Descritpion != "", "description", "must be provided")
 	v.Check(len(task.Descritpion) <= 250, "description", "must no be more than 250 bytes long")
 
-	v.Check(task.Completed != false, "completed", "new task must be false")
+	v.Check(task.Completed == false, "completed", "new task must be false")
 }
 
 type TaskModel struct {
@@ -39,9 +39,9 @@ type TaskModel struct {
 // Insert() allows us to create a new task
 func (m TaskModel) Insert(task *Task) error {
 	query := `
-		INSERT INTO todo (title, description)
-		VALUES ($1, $2)
-		RETURNING id, created_at, version
+		INSERT INTO task_list (title, description, completed)
+		VALUES ($1, $2, $3)
+		RETURNING id, created_at, completed, version
 	`
 
 	//creating the context
@@ -50,9 +50,9 @@ func (m TaskModel) Insert(task *Task) error {
 	defer cancel()
 
 	//collect the date field into a slice
-	args := []interface{}{task.Title, task.Descritpion}
+	args := []interface{}{task.Title, task.Descritpion, task.Completed}
 
-	return m.DB.QueryRowContext(ctx, query, args...).Scan(&task.ID, &task.CreatedAt, &task.Version)
+	return m.DB.QueryRowContext(ctx, query, args...).Scan(&task.ID, &task.CreatedAt, &task.Completed, &task.Version)
 }
 
 // Get() allows us to retrieve a specific task
@@ -65,7 +65,7 @@ func (m TaskModel) Get(id int64) (*Task, error) {
 	//Construct our query with the given id
 	query := `
 		SELECT id, create_at, title, description, completed, version
-		FROM todo
+		FROM task_list
 		WHERE id = $1
 	`
 
@@ -104,7 +104,7 @@ func (m TaskModel) Get(id int64) (*Task, error) {
 func (m TaskModel) Update(task *Task) error {
 	//create a query
 	query := `
-		UPDATE todo
+		UPDATE task_list
 		SET title = $1, description = $2, completed = $3, version = version + 1
 		WHERE id = $4
 		AND version = $5
@@ -139,7 +139,7 @@ func (m TaskModel) Delete(id int64) error {
 	}
 	//creating the delete query
 	query := `
-		DELETE FROM todo
+		DELETE FROM task_list
 		WHERE id = $1
 	`
 
@@ -173,7 +173,7 @@ func (m TaskModel) GetAll(title string, description string, completed bool, filt
 	query := fmt.Sprintf(`
 		SELECT COUNT(*) OVER(),
 		id, created_at, title, description, completed, version
-		FROM todo
+		FROM task_list
 		WHERE (to_tsvector('simple', title) @@ plainto_tsquery('simple', $1) OR $1 = '')
 		AND (to_tsvector('simple', description) @@ plainto_tsquery('simple', $1) OR $1 = '')
 		AND (completed = FALSE OR completed = TRUE)

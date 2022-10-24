@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 
+	_ "github.com/lib/pq"
 	"todo.michaelgomez.net/internal/data"
 )
 
