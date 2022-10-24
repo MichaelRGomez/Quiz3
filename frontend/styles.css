@@ -1,1 +1,39 @@
 /* File: todoApi/frontend/styles.css */
+.material-icons{
+    font-size : 48px; 
+    text-align: left;
+    position: relative;
+    max-width: 80%;
+}
+
+.header{
+    background-color: #ffffff;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 40px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.task{
+    border: solid 1px;
+    background-color: ghostwhite;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2%;
+    padding-right: 2%;
+
+    max-width: 50%;
+    margin: auto;
+}
+
+.checkbox-icon{
+    position: relative;
+    margin-right: auto;
+    max-width: 10%;
+}

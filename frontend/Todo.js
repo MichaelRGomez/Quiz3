@@ -5208,7 +5208,7 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $elm$html$Html$h4 = _VirtualDom_node('h4');
+var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Todo$Complete = {$: 'Complete'};
@@ -5246,7 +5246,7 @@ var $author$project$Todo$viewIcon = function (model) {
 				$elm$html$Html$span,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('material-icons md-48'),
+						$elm$html$Html$Attributes$class('material-icons'),
 						$elm$html$Html$Events$onClick(msg)
 					]),
 				_List_fromArray(
@@ -5286,7 +5286,7 @@ var $author$project$Todo$view = function (model) {
 				_List_fromArray(
 					[
 						A2(
-						$elm$html$Html$h4,
+						$elm$html$Html$h2,
 						_List_Nil,
 						_List_fromArray(
 							[

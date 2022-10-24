@@ -30,7 +30,7 @@ view model =
   div [] [
     div [class "header"] [ h1 [] [text "Todo List"]],
     div [class "task"] [
-        h4 [] [text "Title"], text "make dinner", text "make spaghetti and prepare wine", viewIcon model
+        h2 [] [text "Title"], text "make dinner", text "make spaghetti and prepare wine", viewIcon model
         ] 
   ]
 
@@ -41,4 +41,4 @@ viewIcon model =
         msg = if model.completed then Incomplete else Complete
     in
 
-    div [class "checkbox-icon"] [ span [class "material-icons md-48", onClick msg] [ text iconType] ]
+    div [class "checkbox-icon"] [ span [class "material-icons", onClick msg] [ text iconType] ]
