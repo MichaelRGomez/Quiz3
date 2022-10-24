@@ -4370,11 +4370,12 @@ function _Browser_load(url)
 		}
 	}));
 }
+var $elm$core$Basics$False = {$: 'False'};
 var $author$project$Todo$Model = F3(
-	function (name, password, passwordAgain) {
-		return {name: name, password: password, passwordAgain: passwordAgain};
+	function (title, description, completed) {
+		return {completed: completed, description: description, title: title};
 	});
-var $author$project$Todo$init = A3($author$project$Todo$Model, '', '', '');
+var $author$project$Todo$init = A3($author$project$Todo$Model, 'title', 'description', false);
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
@@ -4476,7 +4477,6 @@ var $elm$core$Result$Ok = function (a) {
 var $elm$json$Json$Decode$OneOf = function (a) {
 	return {$: 'OneOf', a: a};
 };
-var $elm$core$Basics$False = {$: 'False'};
 var $elm$core$Basics$add = _Basics_add;
 var $elm$core$Maybe$Just = function (a) {
 	return {$: 'Just', a: a};
@@ -5187,69 +5187,16 @@ var $elm$browser$Browser$sandbox = function (impl) {
 };
 var $author$project$Todo$update = F2(
 	function (msg, model) {
-		switch (msg.$) {
-			case 'Name':
-				var name = msg.a;
-				return _Utils_update(
-					model,
-					{name: name});
-			case 'Password':
-				var password = msg.a;
-				return _Utils_update(
-					model,
-					{password: password});
-			default:
-				var password = msg.a;
-				return _Utils_update(
-					model,
-					{passwordAgain: password});
+		if (msg.$ === 'Complete') {
+			return _Utils_update(
+				model,
+				{completed: true});
+		} else {
+			return _Utils_update(
+				model,
+				{completed: false});
 		}
 	});
-var $author$project$Todo$Name = function (a) {
-	return {$: 'Name', a: a};
-};
-var $author$project$Todo$Password = function (a) {
-	return {$: 'Password', a: a};
-};
-var $author$project$Todo$PasswordAgain = function (a) {
-	return {$: 'PasswordAgain', a: a};
-};
-var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$input = _VirtualDom_node('input');
-var $elm$html$Html$Events$alwaysStop = function (x) {
-	return _Utils_Tuple2(x, true);
-};
-var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 'MayStopPropagation', a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$stopPropagationOn = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
-	});
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
-	});
-var $elm$json$Json$Decode$string = _Json_decodeString;
-var $elm$html$Html$Events$targetValue = A2(
-	$elm$json$Json$Decode$at,
-	_List_fromArray(
-		['target', 'value']),
-	$elm$json$Json$Decode$string);
-var $elm$html$Html$Events$onInput = function (tagger) {
-	return A2(
-		$elm$html$Html$Events$stopPropagationOn,
-		'input',
-		A2(
-			$elm$json$Json$Decode$map,
-			$elm$html$Html$Events$alwaysStop,
-			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
-};
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5258,45 +5205,54 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			key,
 			$elm$json$Json$Encode$string(string));
 	});
-var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
-var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
-var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Todo$viewInput = F4(
-	function (t, p, v, toMsg) {
-		return A2(
-			$elm$html$Html$input,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$type_(t),
-					$elm$html$Html$Attributes$placeholder(p),
-					$elm$html$Html$Attributes$value(v),
-					$elm$html$Html$Events$onInput(toMsg)
-				]),
-			_List_Nil);
-	});
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$h4 = _VirtualDom_node('h4');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Todo$viewValidation = function (model) {
-	return _Utils_eq(model.password, model.passwordAgain) ? A2(
+var $author$project$Todo$Complete = {$: 'Complete'};
+var $author$project$Todo$Incomplete = {$: 'Incomplete'};
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $elm$html$Html$span = _VirtualDom_node('span');
+var $author$project$Todo$viewIcon = function (model) {
+	var msg = model.completed ? $author$project$Todo$Incomplete : $author$project$Todo$Complete;
+	var iconType = model.completed ? 'select_check_box' : 'check_box_outline_blank';
+	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				A2($elm$html$Html$Attributes$style, 'color', 'green')
+				$elm$html$Html$Attributes$class('checkbox-icon')
 			]),
 		_List_fromArray(
 			[
-				$elm$html$Html$text('OK')
-			])) : A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				A2($elm$html$Html$Attributes$style, 'color', 'red')
-			]),
-		_List_fromArray(
-			[
-				$elm$html$Html$text('Passwords do not match!')
+				A2(
+				$elm$html$Html$span,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('material-icons md-48'),
+						$elm$html$Html$Events$onClick(msg)
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(iconType)
+					]))
 			]));
 };
 var $author$project$Todo$view = function (model) {
@@ -5305,10 +5261,41 @@ var $author$project$Todo$view = function (model) {
 		_List_Nil,
 		_List_fromArray(
 			[
-				A4($author$project$Todo$viewInput, 'text', 'Name', model.name, $author$project$Todo$Name),
-				A4($author$project$Todo$viewInput, 'password', 'Password', model.password, $author$project$Todo$Password),
-				A4($author$project$Todo$viewInput, 'password', 'Re-enter Password', model.passwordAgain, $author$project$Todo$PasswordAgain),
-				$author$project$Todo$viewValidation(model)
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('header')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$h1,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Todo List')
+							]))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('task')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$h4,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Title')
+							])),
+						$elm$html$Html$text('make dinner'),
+						$elm$html$Html$text('make spaghetti and prepare wine'),
+						$author$project$Todo$viewIcon(model)
+					]))
 			]));
 };
 var $author$project$Todo$main = $elm$browser$Browser$sandbox(

@@ -3,57 +3,43 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
+import Html.Events exposing (onClick)
 
 -- MAIN
+main : Program() Model Msg
 main =
   Browser.sandbox { init = init, update = update, view = view }
 
 -- MODEL
-type alias Model =
-  { name : String
-  , password : String
-  , passwordAgain : String
-  }
+type alias Model = { title : String, description : String, completed : Bool}
 
 init : Model
-init =
-  Model "" "" ""
+init = Model "title" "description" False
 
 -- UPDATE
-type Msg
-  = Name String
-  | Password String
-  | PasswordAgain String
+type Msg =  Complete | Incomplete
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    Name name ->
-      { model | name = name }
-
-    Password password ->
-      { model | password = password }
-
-    PasswordAgain password ->
-      { model | passwordAgain = password }
+    Complete -> {model | completed = True}
+    Incomplete -> {model | completed = False}
 
 -- VIEW
 view : Model -> Html Msg
 view model =
-  div []
-    [ viewInput "text" "Name" model.name Name
-    , viewInput "password" "Password" model.password Password
-    , viewInput "password" "Re-enter Password" model.passwordAgain PasswordAgain
-    , viewValidation model
-    ]
+  div [] [
+    div [class "header"] [ h1 [] [text "Todo List"]],
+    div [class "task"] [
+        h4 [] [text "Title"], text "make dinner", text "make spaghetti and prepare wine", viewIcon model
+        ] 
+  ]
 
-viewInput : String -> String -> String -> (String -> msg) -> Html msg
-viewInput t p v toMsg =
-  input [ type_ t, placeholder p, value v, onInput toMsg ] []
+viewIcon : Model -> Html Msg
+viewIcon model =
+    let 
+        iconType = if model.completed then "select_check_box" else "check_box_outline_blank"
+        msg = if model.completed then Incomplete else Complete
+    in
 
-viewValidation : Model -> Html msg
-viewValidation model =
-  if model.password == model.passwordAgain then
-    div [ style "color" "green" ] [ text "OK" ]
-  else
-    div [ style "color" "red" ] [ text "Passwords do not match!" ]
+    div [class "checkbox-icon"] [ span [class "material-icons md-48", onClick msg] [ text iconType] ]
