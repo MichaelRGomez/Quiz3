@@ -5290,9 +5290,8 @@ var $author$project$Todo$view = function (model) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$elm$html$Html$text('Title')
+								$elm$html$Html$text('make dinner')
 							])),
-						$elm$html$Html$text('make dinner'),
 						$elm$html$Html$text('make spaghetti and prepare wine'),
 						$author$project$Todo$viewIcon(model)
 					]))

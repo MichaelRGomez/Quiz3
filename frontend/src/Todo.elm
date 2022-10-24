@@ -30,7 +30,7 @@ view model =
   div [] [
     div [class "header"] [ h1 [] [text "Todo List"]],
     div [class "task"] [
-        h2 [] [text "Title"], text "make dinner", text "make spaghetti and prepare wine", viewIcon model
+        h2 [] [text "make dinner"], text "make spaghetti and prepare wine", viewIcon model
         ] 
   ]
 
