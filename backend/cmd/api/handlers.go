@@ -92,7 +92,7 @@ func (app *application) showTaskHandler(w http.ResponseWriter, r *http.Request) 
 // The updateschool handler will facilitate an update action to the task in the database
 func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Println("debug ! 1")
+	//fmt.Println("debug ! 1")
 
 	//This method does a partial replacement
 	//Get the id for the task that needs updating
@@ -102,12 +102,12 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	fmt.Println("debug ! 2")
+	//fmt.Println("debug ! 2")
 
 	//Fetch the original record from the database
 	task, err := app.models.Tasks.Get(id)
 
-	fmt.Println("debug ! 3")
+	//fmt.Println("debug ! 3")
 
 	//Handling the errors
 	if err != nil {
@@ -120,7 +120,7 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	fmt.Println("debug ! 4")
+	//fmt.Println("debug ! 4")
 
 	//Creating an input struct to hold data read in from the client
 	//Updating the input struct to use pointers because pointers have a default value of nil
@@ -130,7 +130,7 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 		Completed   *bool   `json:"completed"`
 	}
 
-	fmt.Println("debug ! 5")
+	//fmt.Println("debug ! 5")
 
 	//Initilizing a new json.Decoder instance
 	err = app.readJSON(w, r, &input)
@@ -139,7 +139,7 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	fmt.Println("debug ! 6")
+	//fmt.Println("debug ! 6")
 
 	//checking for any updates
 	if input.Title != nil {
@@ -152,13 +152,13 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 		task.Completed = *input.Completed
 	}
 
-	fmt.Println("debug ! 7")
+	//fmt.Println("debug ! 7")
 
 	//Performing validation on the updated task. If validation fails, then we send a 422 - unprocessable enitiy response to the client
 	//Initilize a new Validator Instance
 	v := validator.New()
 
-	fmt.Println("debug ! 8")
+	//fmt.Println("debug ! 8")
 
 	//Checking the map to determin if there were any validation errors
 	if data.ValidateTask(v, task); !v.Valid() {
@@ -166,7 +166,7 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	fmt.Println("debug ! 9")
+	//fmt.Println("debug ! 9")
 
 	//Passing the updated task record to the update() method
 	err = app.models.Tasks.Update(task)
@@ -180,7 +180,7 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	fmt.Println("debug ! 10")
+	//fmt.Println("debug ! 10")
 
 	//Writing the data returned by Get()
 	err = app.writeJSON(w, http.StatusOK, envelope{"task": task}, nil)
@@ -188,7 +188,7 @@ func (app *application) updateTaskHandler(w http.ResponseWriter, r *http.Request
 		app.serverErrorResponse(w, r, err)
 	}
 
-	fmt.Println("debug ! 11")
+	//fmt.Println("debug ! 11")
 }
 
 // deletetask handler is to facilitate deletion of a task
