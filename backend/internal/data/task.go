@@ -29,7 +29,7 @@ func ValidateTask(v *validator.Validator, task *Task) {
 	v.Check(task.Descritpion != "", "description", "must be provided")
 	v.Check(len(task.Descritpion) <= 250, "description", "must no be more than 250 bytes long")
 
-	v.Check(task.Completed == false, "completed", "new task must be false")
+	//v.Check(task.Completed, "completed", "new task must be false")
 }
 
 type TaskModel struct {

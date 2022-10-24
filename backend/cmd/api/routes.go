@@ -18,7 +18,7 @@ func (app *application) routes() *httprouter.Router {
 	router.HandlerFunc(http.MethodGet, "/v1/todo", app.listTasksHandler)
 	router.HandlerFunc(http.MethodPost, "/v1/todo", app.createTaskHandler)
 	router.HandlerFunc(http.MethodGet, "/v1/todo/:id", app.showTaskHandler)
-	router.HandlerFunc(http.MethodPatch, "/v1/todo/:id", app.updateTaskHandler)
+	router.HandlerFunc(http.MethodPut, "/v1/todo/:id", app.updateTaskHandler)
 	router.HandlerFunc(http.MethodDelete, "/v1/todo/:id", app.deleteTaskHandler)
 
 	return router
